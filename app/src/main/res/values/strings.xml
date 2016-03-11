@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">lesson3</string>
     <string name="search_action">Search</string>
+    <string name="query_check_error">You should write only one word</string>
 </resources>
