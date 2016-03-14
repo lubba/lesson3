@@ -3,13 +3,15 @@ package com.csc.lesson3;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ public class ConnectTranslatorTask extends AsyncTask<String, Void, List<String>>
     @Override
     protected List<String> doInBackground(String... params) {
         String address = params[0];
-        String path = params[1];
         try {
             URL url = new URL(address);
 
@@ -52,14 +53,13 @@ public class ConnectTranslatorTask extends AsyncTask<String, Void, List<String>>
                 return null;
             }
 
-            File file = new File(path + "/ans.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
             InputStream inputStream = connection.getInputStream();
+            InputSource source = new InputSource(inputStream);
+            source.setEncoding("Cp1251");
 
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-            parser.setInput(inputStream, null);
+            //parser.setInput(inputStream, null);
+            parser.setInput(new BufferedReader(new InputStreamReader(source.getByteStream())));
             while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
                 if (parser.getEventType() == XmlPullParser.TEXT) {
                     Log.d(TAG, "doInBackground: text " + parser.getText());

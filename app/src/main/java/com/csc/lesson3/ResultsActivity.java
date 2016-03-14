@@ -3,7 +3,6 @@ package com.csc.lesson3;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,9 +34,7 @@ public class ResultsActivity extends Activity {
         String address = String.format("https://translate.yandex.net/api/v1.5/tr/translate?key=%s&text=%s&lang=%s", KEY, query, lang);
         ConnectTranslatorTask translatorTask = new ConnectTranslatorTask();
 
-        String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
-        Log.d(TAG, "onCreate: path = " + directory);
-        translatorTask.execute(address, directory);
+        translatorTask.execute(address);
         try {
             List<String> list = translatorTask.get();
             List<Card> cards = new ArrayList<>();
